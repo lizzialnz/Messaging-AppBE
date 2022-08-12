@@ -8,8 +8,8 @@ const router = express.Router();
 const usersRoutes = require('./users');
 router.use('/users', usersRoutes);
 
-// const vacunasRoutes = require('./vacunas');
-// router.use('/vacunas', vacunasRoutes);
+const messageRoutes = require('./messages');
+router.use('/message', messageRoutes);
 
 // const carnetRoutes = require('./carnet');
 // router.use('/carnet', carnetRoutes);

@@ -28,6 +28,9 @@ module.exports = class UsersDao extends DaoObject {
   getByEmail({ email }) {
     return this.findOne({ email });
   }
+  getByUser({ user }) {
+    return this.findOne({ user });
+  }
 
   insertOne({ user, email, password, passwordtemp, expiracion, name, phone }) {
     const newUser = {

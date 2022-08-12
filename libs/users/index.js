@@ -67,6 +67,10 @@ module.exports = class Users {
     async getUsersByEmail({ email }) {
         return this.userDao.getByEmail({ email });
     }
+    
+    async getByUsers({ user }) {
+        return this.userDao.getByUser({ user });
+    }
 
     comparePasswords(rawPassword, dbPassword) {
         return bcrypt.compareSync(rawPassword, dbPassword);
