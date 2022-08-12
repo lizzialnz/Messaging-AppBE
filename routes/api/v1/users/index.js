@@ -51,6 +51,17 @@ router.get('/email/:email', async (req, res) => {
   }
 });
 
+router.get('/user/:user', async (req, res) => {
+  try {
+    const { user } = req.params;
+    const registration = await users.getByUsers({ user });
+    return res.status(200).json(registration);
+  } catch (ex) {
+    console.error(ex);
+    return res.status(501).json({ error: 'Error al procesar solicitud.' });
+  }
+});
+
 router.post('/new', async (req, res) => {
   try {
     const {
@@ -173,7 +184,7 @@ router.delete('/delete/:codigo', async (req, res) => {
     const deleteUsers = await users.deleteUsers({ codigo: codigo });
 
     if (!deleteUsers) {
-      return res.status(404).json({ error: 'Categoria no encontrada.' });
+      return res.status(404).json({ error: 'Users no encontrada.' });
     }
     return res.status(200).json({ deleteUsers });
   } catch (ex) {
