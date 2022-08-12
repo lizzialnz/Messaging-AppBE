@@ -17,7 +17,7 @@ module.exports = class Users {
         return {
             entity: 'Users',
             version: '1.0.0',
-            description: 'CRUD de Users'
+            description: 'CRUD of Users'
         };
     }
 
@@ -77,25 +77,33 @@ module.exports = class Users {
     }
 
     async updateUsers({
-        nombre,
-        avatar,
+        user,
+        email,
         password,
-        estado,
+        passwordtemp,
+        expiracion,
+        name,
+        phone,
         codigo
     }) {
         const result = await this.userDao.updateOne({
             codigo,
-            nombre,
-            avatar,
+            user,
+            email,
             password: bcrypt.hashSync(password),
-            estado
+            passwordtemp,
+            expiracion,
+            name,
+            phone
         });
         return {
-            nombre,
+            user,
+            email,
             password,
-            avatar,
-            estado,
-            codigo,
+            passwordtemp,
+            expiracion,
+            name,
+            phone,
             modified: result
         }
     }

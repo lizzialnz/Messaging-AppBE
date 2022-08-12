@@ -89,7 +89,7 @@ module.exports = class UsersDao extends DaoObject {
   deleteOne({ codigo }) {
     const updateCommand = {
       "$set": {
-        estado: 'OFF',
+        status: 'OFF',
         updated: new Date().toISOString()
       }
     }
