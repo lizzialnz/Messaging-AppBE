@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
 
 router.get('/all', async (req, res) => {
   try {
-    const users = await users.getUsers();
-    return res.status(200).json(users);
+    const user = await users.getUsers();
+    return res.status(200).json(user);
   } catch (ex) {
     console.error(ex);
     return res.status(501).json({ error: 'Error al procesar solicitud.' });
@@ -32,7 +32,18 @@ router.get('/all', async (req, res) => {
 router.get('/byid/:codigo', async (req, res) => {
   try {
     const { codigo } = req.params;
-    const registration = await users.getUserById({ codigo });
+    const registration = await users.getUsersById({ codigo });
+    return res.status(200).json(registration);
+  } catch (ex) {
+    console.error(ex);
+    return res.status(501).json({ error: 'Error al procesar solicitud.' });
+  }
+});
+
+router.get('/email/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const registration = await users.getUsersByEmail({ email });
     return res.status(200).json(registration);
   } catch (ex) {
     console.error(ex);
@@ -98,14 +109,19 @@ router.post('/new', async (req, res) => {
 router.put('/update/:codigo', async (req, res) => {
   try {
     const { codigo } = req.params;
-    if (!(/^\d+$/.test(codigo))) {
-      return res.status(400).json({ error: 'El codigo debe ser un dígito válido.' });
+    if (!(/^\w*$/.test(codigo))) {
+      return res.status(400).json({ error: 'El codigo debe ser una cadena de 24 dígitos.' });
     }
-    const { user, password, name, phone, status } = req.body;
+    const { user, email, password,passwordtemp='', expiracion='', name, phone } = req.body;
 
     if (/^\s*$/.test(user)) {
       return res.status(400).json({
         error: 'Se espera un usuario'
+      });
+    }
+    if (/^\s*$/.test(email)) {
+      return res.status(400).json({
+        error: 'Se espera un correo'
       });
     }
     if (/^\s*$/.test(password)) {
@@ -123,26 +139,22 @@ router.put('/update/:codigo', async (req, res) => {
         error: 'Se espera número de teléfono'
       });
     }
-    if (!(/^(OFF)|(ON)$/.test(status))) {
-      return res.status(400).json({
-        error: 'Se espera valor de estado en OFF - ON'
-      });
-    }
 
     const updateResult = await users.updateUsers({
       user,
       email,
       password,
+      passwordtemp,
+      expiracion,
       name,
       phone,
-      status,
       codigo
     });
 
     if (!updateResult) {
       return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
-    return res.status(200).json({ updatedCategory: updateResult });
+    return res.status(200).json({ updateUsers: updateResult });
 
   } catch (ex) {
     console.error(ex);
@@ -154,11 +166,11 @@ router.put('/update/:codigo', async (req, res) => {
 router.delete('/delete/:codigo', async (req, res) => {
   try {
     const { codigo } = req.params;
-    if (!(/^\d+$/.test(codigo))) {
-      return res.status(400).json({ error: 'El codigo debe ser un dígito válido.' });
+    if (!(/^\w*$/.test(codigo))) {
+      return res.status(400).json({ error: 'El codigo debe ser una cadena de 24 dígitos.' });
     }
 
-    const deleteUsers = await users.deleteUsers({ codigo: parseInt(codigo) });
+    const deleteUsers = await users.deleteUsers({ codigo: codigo });
 
     if (!deleteUsers) {
       return res.status(404).json({ error: 'Categoria no encontrada.' });
