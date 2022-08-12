@@ -1,3 +1,6 @@
 # Messaging-AppBE
-aplicación de mensajería utilizando react, node, javascript y mongodb
+Back-End de la aplicación de mensajería utilizando node, express, javascript y mongo db.
+
+
+
 Lizzi Alonzo
