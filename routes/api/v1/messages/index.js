@@ -6,6 +6,12 @@ const messageDao = new Messagemodels();
 const messages = new Messagelibs(messageDao);
 messages.init();
 
+const Userlibs = require('../../../../libs/users');
+const Usermodels = require('../../../../dao/mongodb/models/UsersDao');
+const userDao = new Usermodels();
+const users = new Userlibs(userDao);
+users.init();
+
 router.get('/', async (req, res) => {
     // extraer y validar datos del request
     try {
@@ -66,12 +72,23 @@ router.post('/new', async (req, res) => {
             });
         }
 
-        const newMessage = await messages.addMessages({
-            sender,
-            receiver,
-            message
-        });
-        return res.status(200).json(newMessage);
+        //Validar si existe el usuario antes de enviar el mensaje
+        const user = receiver;
+        const registration = await users.getByUsers({ user });
+        console.log(registration);
+        if (registration) {
+            const newMessage = await messages.addMessages({
+                sender,
+                receiver,
+                message
+            });
+            return res.status(200).json(newMessage);
+
+        } else {
+            console.log("Error el usuario receptor no existe");
+            return res.status(502).json({ error: 'Error al procesar solicitud' });
+        }
+        //hasta aquí ↑
     } catch (ex) {
         console.error(ex);
         return res.status(502).json({ error: 'Error al procesar solicitud' });
@@ -103,17 +120,17 @@ router.put('/update/:codigo', async (req, res) => {
             });
         }
 
-            const updateResult = await messages.updateMessages({
-                sender,
-                receiver,
-                message,
-                codigo
-            });
+        const updateResult = await messages.updateMessages({
+            sender,
+            receiver,
+            message,
+            codigo
+        });
 
-            if (!updateResult) {
-                return res.status(404).json({ error: 'Mensaje no encontrado.' });
-            }
-            return res.status(200).json({ updateMessages: updateResult });
+        if (!updateResult) {
+            return res.status(404).json({ error: 'Mensaje no encontrado.' });
+        }
+        return res.status(200).json({ updateMessages: updateResult });
 
     } catch (ex) {
         console.error(ex);

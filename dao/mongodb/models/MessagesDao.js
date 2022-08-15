@@ -4,19 +4,12 @@ module.exports = class MessageDao extends DaoObject {
     constructor(db = null) {
         super(db, 'messages');
     }
-    //   async setup() {
-    //     if (process.env.MONGODB_SETUP) {
-    //       const indexExists = await this.collection.indexExists('email');
-    //       if (!indexExists) {
-    //         await this.collection.createIndex({ email: 1 }, { unique: true });
-    //       }
-    //       const index2Exists = await this.collection.indexExists('user');
-    //       if (!index2Exists) {
-    //         await this.collection.createIndex({ user: 1 }, { unique: true });
-    //       }
-    //     }
-    //   }
-
+    async setup() {
+        if (process.env.MONGODB_SETUP) {
+         // TODO: Agregar Indices
+        }
+      }
+      
     getAll() {
         return this.find();
     }

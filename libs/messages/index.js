@@ -14,6 +14,7 @@ module.exports = class Messages {
     }
     async init() {
         await this.messageDao.init();
+        await this.messageDao.setup();
     }
     async getVersion() {
         return {
