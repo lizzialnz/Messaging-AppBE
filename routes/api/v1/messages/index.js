@@ -46,7 +46,50 @@ router.get('/byid/:codigo', async (req, res) => {
     }
 });
 
+router.get('/msgsuser/:sender', async (req, res) => {
+    try {
+        const { sender } = req.params;
 
+        const user = sender;
+        const senderq = await users.getByUsers({ user });
+        if (senderq) {
+            const registration = await messages.getMessagesByUser({ sender });
+            return res.status(200).json(registration);
+        } else {
+            console.log("Error el usuario emisor no existe");
+            return res.status(502).json({ error: 'Error al procesar solicitud' });
+        }
+    } catch (ex) {
+        console.error(ex);
+        return res.status(501).json({ error: 'Error al procesar solicitud.' });
+    }
+});
+
+router.get('/receiver', async (req, res) => {
+    try {
+        const { sender, receiver } = req.body;
+        var user = sender;
+        const senderq = await users.getByUsers({ user });
+        if (senderq) {
+            user = receiver;
+            const receiverq = await users.getByUsers({ user });
+            if (receiverq) {
+                const registration = await messages.getByMsgReceiver({ sender, receiver });
+                return res.status(200).json(registration);
+            } else {
+                console.log("Error el usuario receptor no existe");
+                return res.status(502).json({ error: 'Error al procesar solicitud' });
+            }
+        } else {
+            console.log("Error el usuario emisor no existe");
+            return res.status(502).json({ error: 'Error al procesar solicitud' });
+
+        }
+    } catch (ex) {
+        console.error(ex);
+        return res.status(501).json({ error: 'Error al procesar solicitud.' });
+    }
+});
 
 
 router.post('/new', async (req, res) => {
@@ -73,20 +116,27 @@ router.post('/new', async (req, res) => {
         }
 
         //Validar si existe el usuario antes de enviar el mensaje
-        const user = receiver;
-        const registration = await users.getByUsers({ user });
-        console.log(registration);
-        if (registration) {
-            const newMessage = await messages.addMessages({
-                sender,
-                receiver,
-                message
-            });
-            return res.status(200).json(newMessage);
+        var user = sender;
+        const senderq = await users.getByUsers({ user });
+        if (senderq) {
+            user = receiver;
+            const receiverq = await users.getByUsers({ user });
+            if (receiverq) {
+                const newMessage = await messages.addMessages({
+                    sender,
+                    receiver,
+                    message
+                });
+                return res.status(200).json(newMessage);
 
+            } else {
+                console.log("Error el usuario receptor no existe");
+                return res.status(502).json({ error: 'Error al procesar solicitud' });
+            }
         } else {
-            console.log("Error el usuario receptor no existe");
+            console.log("Error el usuario emisor no existe");
             return res.status(502).json({ error: 'Error al procesar solicitud' });
+
         }
         //hasta aquí ↑
     } catch (ex) {
@@ -120,17 +170,29 @@ router.put('/update/:codigo', async (req, res) => {
             });
         }
 
-        const updateResult = await messages.updateMessages({
-            sender,
-            receiver,
-            message,
-            codigo
-        });
+        //Validar si existe el usuario antes de enviar el mensaje
+        const user = receiver;
+        const registration = await users.getByUsers({ user });
+        console.log(registration);
+        if (registration) {
+            const updateResult = await messages.updateMessages({
+                sender,
+                receiver,
+                message,
+                codigo
+            });
 
-        if (!updateResult) {
-            return res.status(404).json({ error: 'Mensaje no encontrado.' });
+            if (!updateResult) {
+                return res.status(404).json({ error: 'Mensaje no encontrado.' });
+            }
+            return res.status(200).json({ updateMessages: updateResult });
+
+        } else {
+            console.log("Error el usuario receptor no existe");
+            return res.status(502).json({ error: 'Error al procesar solicitud' });
         }
-        return res.status(200).json({ updateMessages: updateResult });
+        //hasta aquí ↑
+
 
     } catch (ex) {
         console.error(ex);

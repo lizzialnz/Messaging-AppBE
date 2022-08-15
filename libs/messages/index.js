@@ -55,8 +55,13 @@ module.exports = class Messages {
     async getMessagesById({ codigo }) {
         return this.messageDao.getById({ codigo });
     }
-    async getByMessages({ re }) {
-        return this.userDao.getByEmail({ email });
+    async getMessagesByUser({ sender }) {
+        return this.messageDao.getByMessages({ sender });
+
+    }
+    async getByMsgReceiver({ sender, receiver }) {
+        return this.messageDao.getByReceiver({ sender, receiver });
+
     }
     async updateMessages({
         sender,
