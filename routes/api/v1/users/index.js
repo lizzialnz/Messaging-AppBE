@@ -51,9 +51,9 @@ router.get('/email/:email', async (req, res) => {
   }
 });
 
-router.get('/user/:user', async (req, res) => {
+router.get('/user', async (req, res) => {
   try {
-    const { user } = req.params;
+    const { user } = req.body;
     const registration = await users.getByUsers({ user });
     return res.status(200).json(registration);
   } catch (ex) {
