@@ -17,8 +17,16 @@ module.exports = class MessageDao extends DaoObject {
     getById({ codigo }) {
         return this.findById(codigo);
     }
-   
+    getByMessages({ sender }) {
+        const estado = "SEND";
+        return this.find({sender:sender,status:estado});
+    }
 
+    getByReceiver({ sender, receiver }) {
+        const estado = "SEND";
+        return this.find({sender:sender,receiver:receiver, status:estado});
+    }
+   
     insertOne({ sender, receiver, message }) {
         const newMessage = {
             sender,
