@@ -67,7 +67,7 @@ module.exports = class Users {
     async getUsersByEmail({ email }) {
         return this.userDao.getByEmail({ email });
     }
-    
+
     async getByUsers({ user }) {
         return this.userDao.getByUser({ user });
     }
@@ -112,16 +112,15 @@ module.exports = class Users {
         }
     }
 
-    async updateUserPass({
-        password,
-        codigo
-    }) {
-        const result = await this.userDao.updateUserPass({
-            password: bcrypt.hashSync(password)
+    async updateuserPass({ codigo, passwordtemp }) {
+        console.log(passwordtemp);
+        const result = await this.userDao.updatePass({
+            codigo,
+            passwordtemp: bcrypt.hashSync(passwordtemp),
         });
         return {
             codigo,
-            password,
+            passwordtemp,
             modified: result
         }
     }

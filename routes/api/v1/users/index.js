@@ -99,17 +99,35 @@ router.post('/new', async (req, res) => {
       });
     }
 
-    const newUser = await users.addUsers({
-      user,
-      email,
-      password,
-      passwordtemp,
-      expiracion,
-      name,
-      phone,
-    });
+    //Validar si existe el usuario antes de enviar el mensaje
+    const userq = await users.getByUsers({ user });
+    if (userq!=[]) {
+      const emailq = await users.getUsersByEmail({ email });
+      if (emailq!=[]) {
 
-    return res.status(200).json(newUser);
+        const newUser = await users.addUsers({
+          user,
+          email,
+          password,
+          passwordtemp,
+          expiracion,
+          name,
+          phone,
+        });
+
+        return res.status(200).json(newUser);
+      } else {
+        console.log("El correo ya este vinculado a una cuenta");
+        return res.status(502).json({ error: 'Error al procesar solicitud' });
+      }
+    } else {
+      console.log("El nombre de usuario ya existe");
+      return res.status(502).json({ error: 'Error al procesar solicitud' });
+
+    }
+    //hasta aquí ↑
+
+
   } catch (ex) {
     console.error(ex);
     console.log("Es posible que:\n1. El correo ya este vinculado a una cuenta \n2. El nombre de usuario ya existe");
@@ -123,7 +141,7 @@ router.put('/update/:codigo', async (req, res) => {
     if (!(/^\w*$/.test(codigo))) {
       return res.status(400).json({ error: 'El codigo debe ser una cadena de 24 dígitos.' });
     }
-    const { user, email, password,passwordtemp='', expiracion='', name, phone } = req.body;
+    const { user, email, password, passwordtemp = '', expiracion = '', name, phone } = req.body;
 
     if (/^\s*$/.test(user)) {
       return res.status(400).json({
