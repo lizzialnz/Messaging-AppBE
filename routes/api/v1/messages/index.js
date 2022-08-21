@@ -91,7 +91,6 @@ router.get('/receiver', async (req, res) => {
     }
 });
 
-
 router.post('/new', async (req, res) => {
     try {
         const {
