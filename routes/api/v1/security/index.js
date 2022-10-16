@@ -80,8 +80,8 @@ router.post('/recover', async (req, res)=>{
       from: process.env.APP_CORREO, // sender address
       to: email, // list of receivers
       subject: "Recuperación de contraseña", // Subject line
-      text: 'Contraseña administrativa: '+passwordtemp, // plain text body
-      html: "<b>Esta es una contraseña temporal que expirara en 24 horas. Por favor cambien su contraseña al ingresar <br><br>Contraseña temporal: </b>"+passwordtemp, // html body
+      text: 'Contraseña administrativa: ', // plain text body
+      html: "<b>Esta es una contraseña temporal que expirará en 24 horas. Por favor cambie su contraseña al ingresar <br><br>Contraseña temporal: </b>"+passwordtemp, // html body
     });
     const newpass = await users.updateuserPass({codigo,passwordtemp});
     console.log(info);

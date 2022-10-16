@@ -34,7 +34,8 @@ module.exports = class Messages {
             {
                 sender,
                 receiver,
-                message: ncryptObject.encrypt(message),
+                // message: ncryptObject.encrypt(message),
+                message: message ,
                 status
             }
         );
@@ -59,9 +60,9 @@ module.exports = class Messages {
         return this.messageDao.getByMessages({ sender });
 
     }
-    async getByMsgReceiver({ sender, receiver }) {
-        return this.messageDao.getByReceiver({ sender, receiver });
 
+    async getByMsgReceiver({ receiver }) {
+        return this.messageDao.getByReceiver({ receiver });
     }
     async updateMessages({
         sender,
