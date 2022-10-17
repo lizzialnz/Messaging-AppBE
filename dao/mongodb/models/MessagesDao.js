@@ -22,9 +22,9 @@ module.exports = class MessageDao extends DaoObject {
         return this.find({sender:sender,status:estado});
     }
 
-    getByReceiver({ sender, receiver }) {
+    getByReceiver({ receiver }) {
         const estado = "SEND";
-        return this.find({sender:sender,receiver:receiver, status:estado});
+        return this.find({receiver:receiver, status:estado});
     }
    
     insertOne({ sender, receiver, message }) {

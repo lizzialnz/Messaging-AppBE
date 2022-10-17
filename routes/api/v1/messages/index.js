@@ -65,25 +65,17 @@ router.get('/msgsuser/:sender', async (req, res) => {
     }
 });
 
-router.get('/receiver', async (req, res) => {
+router.get('/receiver/:receiver', async (req, res) => {
     try {
-        const { sender, receiver } = req.body;
-        var user = sender;
-        const senderq = await users.getByUsers({ user });
-        if (senderq) {
-            user = receiver;
-            const receiverq = await users.getByUsers({ user });
-            if (receiverq) {
-                const registration = await messages.getByMsgReceiver({ sender, receiver });
-                return res.status(200).json(registration);
-            } else {
-                console.log("Error el usuario receptor no existe");
-                return res.status(502).json({ error: 'Error al procesar solicitud' });
-            }
+        const { receiver } = req.params;
+        var user = receiver;
+        const receiverq = await users.getByUsers({ user });
+        if (receiverq) {
+            const registration = await messages.getByMsgReceiver({receiver });
+            return res.status(200).json(registration);
         } else {
             console.log("Error el usuario emisor no existe");
             return res.status(502).json({ error: 'Error al procesar solicitud' });
-
         }
     } catch (ex) {
         console.error(ex);

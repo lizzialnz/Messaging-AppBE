@@ -141,7 +141,7 @@ router.put('/update/:codigo', async (req, res) => {
     if (!(/^\w*$/.test(codigo))) {
       return res.status(400).json({ error: 'El codigo debe ser una cadena de 24 dígitos.' });
     }
-    const { user, email, password, passwordtemp = '', expiracion = '', name, phone } = req.body;
+    const {user, email, password, passwordtemp = '', expiracion = '', name, phone} = req.body;
 
     if (/^\s*$/.test(user)) {
       return res.status(400).json({
