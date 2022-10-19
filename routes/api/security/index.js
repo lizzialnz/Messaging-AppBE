@@ -2,13 +2,13 @@ const express =require('express');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 let router = express.Router();
-const Usuario = require('../../../../libs/users');
-const UsuarioDao = require('../../../../dao/mongodb/models/UsersDao');
+const Usuario = require('../../../libs/users');
+const UsuarioDao = require('../../../models/mongodb/UsersDao');
 const userDao = new UsuarioDao();
 const users = new Usuario(userDao);
 users.init();
 
-const {jwtSign} = require('../../../../libs/security');
+const {jwtSign} = require('../../../libs/security');
 
 router.post('/login', async (req, res)=>{
   try {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Userlibs = require('../../../../libs/users');
-const Usermodels = require('../../../../dao/mongodb/models/UsersDao');
+const Userlibs = require('../../../libs/users');
+const Usermodels = require('../../../models/mongodb/UsersDao');
 const userDao = new Usermodels();
 const users = new Userlibs(userDao);
 users.init();

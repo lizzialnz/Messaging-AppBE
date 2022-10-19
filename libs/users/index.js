@@ -1,4 +1,4 @@
-const DaoObject = require('../../dao/mongodb/DaoObject');
+const DaoObject = require('../../models/DaoObject');
 const bcrypt = require('bcryptjs');
 module.exports = class Users {
     userDao = null;

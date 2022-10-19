@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Messagelibs = require('../../../../libs/messages');
-const Messagemodels = require('../../../../dao/mongodb/models/MessagesDao');
+const Messagelibs = require('../../../libs/messages');
+const Messagemodels = require('../../../models/mongodb/MessagesDao');
 const messageDao = new Messagemodels();
 const messages = new Messagelibs(messageDao);
 messages.init();
 
-const Userlibs = require('../../../../libs/users');
-const Usermodels = require('../../../../dao/mongodb/models/UsersDao');
+const Userlibs = require('../../../libs/users');
+const Usermodels = require('../../../models/mongodb/UsersDao');
 const userDao = new Usermodels();
 const users = new Userlibs(userDao);
 users.init();

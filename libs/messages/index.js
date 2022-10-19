@@ -1,4 +1,4 @@
-const DaoObject = require('../../dao/mongodb/DaoObject');
+const DaoObject = require('../../models/DaoObject');
 const ncrypt = require('ncrypt-js');
 var _secretKey = "some-super-secret-key";
 var ncryptObject = new ncrypt(_secretKey);

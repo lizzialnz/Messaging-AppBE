@@ -1,4 +1,4 @@
-var {jwtVerify} = require('../../../../libs/security');
+var {jwtVerify} = require('../../../libs/security');
 
 
 const jwtAuthorizer = async (req, res, next)=>{
