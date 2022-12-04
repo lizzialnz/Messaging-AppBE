@@ -1,5 +1,6 @@
 const { db } = require('../Connection');
 const DaoObject = require('../DaoObject');
+
 module.exports = class UsersDao extends DaoObject {
   constructor(db = null) {
     super(db, 'users');

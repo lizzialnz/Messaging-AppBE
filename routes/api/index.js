@@ -13,4 +13,8 @@ router.use('/message', messageRoutes);
 
 const securityRoutes = require('./security');
 router.use('/auth', authorizer, securityRoutes);
+
+const authapiRoutes = require('./securityAPI');
+router.use('/authapi', authapiRoutes);
+
 module.exports = router;

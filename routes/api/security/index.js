@@ -18,7 +18,7 @@ router.post('/login', async (req, res) => {
     console.log(userData);
     if (userData) {
 
-      if (bcrypt.compareSync(password, userData.passwordtemp) && userData.expiracion > fecha) {
+      if (bcrypt.compareSync (password, userData.passwordtemp) && userData.expiracion > fecha) {
         console.log("Contraseña Correcta, Bienvenido al Sistema " + user);
       } else if (!users.comparePasswords(password, userData.password)) {
         console.error('security login: ', { error: `Credenciales incorrectas para usuario ${userData._id} ${userData.user} incorrectas.` });
@@ -121,6 +121,5 @@ router.post('/updatepassword', async (req, res) => {
     return res.status(502).json({ error: 'Error al procesar solicitud' });
   }
 });
-
 
 module.exports = router;
