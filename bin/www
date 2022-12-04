@@ -1,4 +1,19 @@
 #!/usr/bin/env node
+function random() {
+    return Math.random().toString(36).substring(2); // Eliminar `0.`
+};
+
+function token() {
+    return random() + '-' + random() + '-' + random(); // Para hacer el token más largo
+};
+
+var result = process.env.APP_API_KEY || token();
+console.log(token());
+
+setInterval(() => {
+    var result = process.env.APP_API_KEY || token();
+    console.log(token());
+  }, 1800000);
 
 /**
  * Module dependencies.
